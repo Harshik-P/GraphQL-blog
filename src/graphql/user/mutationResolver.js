@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const User = require("../../models/user");
 const { getAccessToken } = require("../../utils/jwt");
 
+// In this file write all the mutation resolvers
+
 const mutationResolvers = {
   Mutation: {
     createUser: async (_, args) => {

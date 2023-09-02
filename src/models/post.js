@@ -2,6 +2,8 @@ const { DataTypes } = require("sequelize");
 
 const sequelize = require("../../database");
 
+// Creating post model
+
 const Post = sequelize.define("Post", {
   id: {
     type: DataTypes.TEXT,

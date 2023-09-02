@@ -15,15 +15,15 @@ async function init() {
   app.use(
     "/graphql",
     cors(),
-    expressMiddleware(await createApolloGraphqlServer(), {
+    expressMiddleware(await createApolloGraphqlServer(), {  // Attaching apollo server to express server
       context: async ({ req }) => {
         const authHeader = req.headers.authorization;
         const token = authHeader && authHeader.split(" ")[1];
 
         if (token) {
           try {
-            const { userId } = await verifyAccessToken(token);
-            return { userId };
+            const { userId } = await verifyAccessToken(token); // Getting thr user's id using jwt token
+            return { userId }; // Sharing the user's id throughout the server's resolvers
           } catch (err) {
             throw new Error("Invalid token");
           }
@@ -44,4 +44,4 @@ async function init() {
   });
 }
 
-init();
+init(); //Starting the application

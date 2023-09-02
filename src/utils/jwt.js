@@ -5,6 +5,7 @@ const { SECRET_KEY, ALGORITHM } = process.env;
 const verifyJWT = promisify(verify);
 const createJWT = promisify(sign);
 
+// Once the user is created, generate the accessToken
 const getAccessToken = async (
   userId,
   extraPayload = {},
@@ -22,6 +23,7 @@ const getAccessToken = async (
   return accessToken;
 };
 
+// Verifying and getting the details from the jwt token
 const verifyAccessToken = async (accessToken) => {
   let payload;
   try {

@@ -1,5 +1,7 @@
 const { gql } = require("graphql-modules");
 
+// In this file describe all the typeDefs (types, mutations and queries)
+
 const typeDefs = gql`
   type User {
     id: ID!
