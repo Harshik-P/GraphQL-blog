@@ -3,7 +3,7 @@ const { createModule } = require('graphql-modules');
 const queryResolvers = require("./queryResolver");
 const mutationResolvers = require("./mutationResolver");
 const postTypeDefs = require("./schema");
-const isAuthenticated = require('../../utils/resolvedChecks');
+const isAuthenticated = require('../../utils/resolverChecks');
 
 const postResolvers = {
   ...queryResolvers,
