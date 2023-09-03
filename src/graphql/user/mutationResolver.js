@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 
 const User = require("../../models/user");
 const { getAccessToken } = require("../../utils/jwt");
+const GraphqlError = require("../../utils/graphQLErrors");
 
 // In this file write all the mutation resolvers
 
@@ -11,7 +12,7 @@ const mutationResolvers = {
       const { username, name, email, password } = args;
 
       if (!(!!username && !!name && !!email)) {
-        throw new Error("Please enter all the required details");
+        throw GraphqlError("Please enter all the required fields", "INSUFFICIENT_DATA", 400);
       }
 
       const isUsernameAlreadyExists = await User.findOne({
@@ -20,7 +21,7 @@ const mutationResolvers = {
         },
       });
       if (isUsernameAlreadyExists) {
-        throw new Error("Username already exists");
+        throw GraphqlError("username already exists", "USERNAME_ALREADY_EXISTS", 409);
       }
 
       const isEmailAlreadyExists = await User.findOne({
@@ -29,7 +30,7 @@ const mutationResolvers = {
         },
       });
       if (isEmailAlreadyExists) {
-        throw new Error("An account with this email already exists");
+        throw GraphqlError("An account with this email already exists", "EMAIL_ALREADY_EXISTS", 409);
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -56,7 +57,7 @@ const mutationResolvers = {
         };
       } catch (error) {
         console.log(error);
-        throw new Error("Something went wrong");
+        throw GraphqlError("Something went wrong", "SOMETHING_WENT_WRONG", 500);
       }
     },
 
@@ -64,7 +65,7 @@ const mutationResolvers = {
       const { username, password } = args;
 
       if (!(!!username && !!password)) {
-        throw new Error("Please enter all the required details");
+        throw GraphqlError("Please enter all the required fields", "INSUFFICIENT_DATA", 400);
       }
 
       const user = await User.findOne({
@@ -82,10 +83,10 @@ const mutationResolvers = {
             token: accessToken,
           };
         } else {
-          throw new Error("Incorrect password");
+          throw GraphqlError("Incorrect password", "INVALID_PASSWORD", 401);
         }
       } else {
-        throw new Error("User not found");
+        throw GraphqlError("User not found", "USER_NOT_FOUND", 404);
       }
     },
   },

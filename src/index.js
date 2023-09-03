@@ -5,6 +5,7 @@ const cors = require("cors");
 const createApolloGraphqlServer = require("./graphql/index");
 const { verifyAccessToken } = require("./utils/jwt");
 const sequelize = require("../database");
+const GraphqlError = require("./utils/graphQLErrors");
 
 async function init() {
   const app = express();
@@ -25,7 +26,7 @@ async function init() {
             const { userId } = await verifyAccessToken(token); // Getting thr user's id using jwt token
             return { userId }; // Sharing the user's id throughout the server's resolvers
           } catch (err) {
-            throw new Error("Invalid token");
+            throw GraphqlError("Invalid token", "INVALID_TOKEN", 401);
           }
         }
 

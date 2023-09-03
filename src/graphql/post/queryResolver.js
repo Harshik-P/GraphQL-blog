@@ -1,4 +1,5 @@
 const Post = require("../../models/post");
+const GraphqlError = require("../../utils/graphQLErrors");
 
 const QueryResolvers = {
   Query: {
@@ -6,7 +7,7 @@ const QueryResolvers = {
       const posts = await Post.findAll();
 
       if (!posts) {
-        throw new Error("No Posts are there for the moment");
+        return [];
       }
 
       return posts;
@@ -20,7 +21,7 @@ const QueryResolvers = {
       });
 
       if (!post) {
-        throw new Error("Post not found");
+        throw GraphqlError("Post not found", "POST_NOT_FOUND", 404);
       }
 
       return post;
@@ -35,7 +36,7 @@ const QueryResolvers = {
       });
 
       if (!posts) {
-        throw new Error("No Posts found for the user");
+        return [];
       }
 
       return posts;

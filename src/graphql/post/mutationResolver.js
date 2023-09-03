@@ -1,4 +1,5 @@
 const Post = require("../../models/post");
+const GraphqlError = require("../../utils/graphQLErrors");
 
 const mutationResolvers = {
   Mutation: {
@@ -7,7 +8,7 @@ const mutationResolvers = {
       const { title, content } = args;
 
       if (!(!!title || !!content)) {
-        throw new Error("Please enter all the required fields");
+        throw GraphqlError("Please enter all the required fields", "INSUFFICIENT_DATA", 400);
       }
 
       try {
@@ -22,7 +23,7 @@ const mutationResolvers = {
         };
       } catch (error) {
         console.log(error);
-        throw new Error("Something went wrong");
+        throw GraphqlError("Something went wrong", "SOMETHING_WENT_WRONG", 500);
       }
     },
 
@@ -31,7 +32,7 @@ const mutationResolvers = {
       const { title, content, postId } = args;
 
       if (!(!!postId || !!userId)) {
-        throw new Error("Please login and enter the postId");
+        throw GraphqlError("Please enter all the required fields", "INSUFFICIENT_DATA", 400);
       }
 
       const findPostOnlyWithPostId = await Post.findOne({
@@ -41,7 +42,7 @@ const mutationResolvers = {
       });
 
       if (!findPostOnlyWithPostId) {
-        throw new Error("Post not found");
+        throw GraphqlError("Post not found", "POST_NOT_FOUND", 404);
       }
 
       const findPostWithUserId = await Post.findOne({
@@ -52,7 +53,7 @@ const mutationResolvers = {
       });
 
       if (!findPostWithUserId) {
-        throw new Error("You can only update your posts");
+        throw GraphqlError("You can only update your posts", "NOT_AUTHORIZED", 403);
       }
 
       try {
@@ -77,7 +78,7 @@ const mutationResolvers = {
         };
       } catch (error) {
         console.log(error);
-        throw new Error("Something went wrong");
+        throw GraphqlError("Something went wrong", "SOMETHING_WENT_WRONG", 500);
       }
     },
 
@@ -86,7 +87,7 @@ const mutationResolvers = {
       const { postId } = args;
 
       if (!(!!postId || !!userId)) {
-        throw new Error("Please login and enter the postId");
+        throw GraphqlError("Please enter all the required fields", "INSUFFICIENT_DATA", 400);
       }
 
       const findPostOnlyWithPostId = await Post.findOne({
@@ -96,7 +97,7 @@ const mutationResolvers = {
       });
 
       if (!findPostOnlyWithPostId) {
-        throw new Error("Post not found");
+        throw GraphqlError("Post not found", "POST_NOT_FOUND", 404);
       }
 
       const findPostWithUserId = await Post.findOne({
@@ -107,7 +108,7 @@ const mutationResolvers = {
       });
 
       if (!findPostWithUserId) {
-        throw new Error("You can only update your posts");
+        throw GraphqlError("You can only delete your posts", "NOT_AUTHORIZED", 403);
       }
 
       try {
@@ -123,7 +124,7 @@ const mutationResolvers = {
         };
       } catch (error) {
         console.log(error);
-        throw new Error("Something went wrong");
+        throw GraphqlError("Something went wrong", "SOMETHING_WENT_WRONG", 500);
       }
     },
   },

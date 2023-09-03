@@ -1,4 +1,5 @@
 const User = require("../../models/user");
+const GraphqlError = require("../../utils/graphQLErrors");
 
 // In this file write all the query resolvers
 
@@ -8,7 +9,7 @@ const QueryResolvers = {
       const users = await User.findAll();
 
       if (!users) {
-        throw new Error("No Users found");
+        return [];
       }
 
       return users;
@@ -23,7 +24,7 @@ const QueryResolvers = {
       });
 
       if (!user) {
-        throw new Error("User not found");
+        throw GraphqlError("User not found", "User_NOT_FOUND", 404);
       }
 
       return user;
