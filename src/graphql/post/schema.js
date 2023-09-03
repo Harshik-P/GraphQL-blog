@@ -15,7 +15,7 @@ const postTypeDefs = gql`
   type Query {
     getAllPosts: [Post]
     getPostById(postId: String!): Post
-    getAllPostsOfUser(userId: String): [Post]
+    getAllPostsOfUser(userId: String!): [Post]
   }
 
   type Mutation {
