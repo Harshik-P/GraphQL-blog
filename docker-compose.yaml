@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    container_name: postgres_container
+    container_name: postgresql_container
     # image: postgres
     build:
       context: ./db
@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
   app:
-    image: graphql-node
+    image: node-graphql
     ports:
       - 5000:5000
     depends_on:
